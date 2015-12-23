@@ -1,4 +1,5 @@
 <?php
+// inclu mon fichier connexion
 $bdd =new PDO('mysql:host=localhost;dbname=siteweb;charset=utf8', 'root', '');
 
 $post = array();
@@ -49,6 +50,15 @@ if(!empty($_POST)){
 	}
 	else {
 		// $monImgUpload = upload/monimage.jpg
+
+		$search = array(' ', 'é', 'è', 'à', 'ù');
+		$replace = array ('-', 'e', 'e', 'a', 'u');
+		// $search => les caractères qu'on souhaite remplacer
+		// $replace => les valeurs de remplacement( dans le même ordre que $ search)
+		// time().'-'. $_FILES['img']['name'] => La chaine dans laquelle j'effectue les remplacements
+
+		$newFileName = str_replace($search, $replace, time().'-'. $_FILES['img']['name'])
+	
 		$monImgUpload = $dirUpload.time().'-'.$_FILES['img']['name'];
 		if(move_uploaded_file($_FILES['img']['tmp_name'], $monImgUpload)){
 			// insertion des données de l'article seulement si le fichier a été uploadé
